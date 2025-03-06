@@ -4,6 +4,8 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import './App.css';
 import Home from "./Home";
 import SignIn from "./SignIn";
+import FinancePage from "./Finance";
+import ContactPage from "./Contact";
 
 function App() {
   return (
@@ -11,6 +13,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} /> {/* Use element instead of component */}
         <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/finance" element={<FinancePage />} />
+        <Route path="/contact" element={<ContactPage />} />
+
       </Routes>
     </Router>
   );

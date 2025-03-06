@@ -1,154 +1,188 @@
-:root { 
-    --header-height: 80px;
-  }
-  
-  .home {
-    min-height: 100vh;
-    width: 100%;
-    overflow-x: hidden;
-    padding-top: var(--header-height);
-  }
-  
-  .container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    width: 100%;
-  }
-  
-  /* Hero Section */
-  .hero-section {
-    min-height: calc(100vh - var(--header-height));
-    padding: 6rem 0;
+/* Reset Styles */
+* { 
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Global Styles */
+body {
+  background-color: #f5f5f7;
+  color: #333;
+  overflow-x: hidden;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ======= Top Navigation Bar ======= */
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #222;
+  color: white;
+  padding: 15px 40px;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+}
+
+.nav-links li {
+  margin-left: 20px;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  transition: 0.3s ease;
+}
+
+.nav-links li a:hover {
+  color: #4a90e2;
+}
+
+.sign-in-btn {
+  padding: 8px 16px;
+  background-color: #4a90e2;
+  border-radius: 5px;
+}
+
+.sign-in-btn:hover {
+  background-color: #357abd;
+}
+
+/* ======= Sidebar ======= */
+.sidebar {
+  width: 250px;
+  background-color: #222;
+  color: white;
+  padding: 20px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 50px;
+  z-index: 100;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar ul li {
+  padding: 12px 0;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+  color: #4a90e2;
+}
+
+/* ======= Main Content ======= */
+.main-content {
+  flex: 1;
+  margin-left: 250px;
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+}
+
+/* Hero Section */
+.hero {
+  height: 400px;
+  background-color: #4a90e2;
+  color: white;
+  padding: 60px;
+  text-align: center;
+}
+
+.hero h2 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.cta-buttons .primary-btn {
+  background-color: white;
+  color: #4a90e2;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.cta-buttons .secondary-btn {
+  background-color: #222;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+/* What We Offer */
+.services-grid {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.service-card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+}
+
+.service-card:hover {
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .top-nav {
+    flex-direction: column;
     text-align: center;
-    background: linear-gradient(135deg, #2E86C1, #85C1E9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
-  
-  .hero-content {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 2rem;
+
+  .hero {
+    padding: 40px;
   }
-  
-  .hero-section h1 {
-    font-size: 3.5rem;
-    color: white;
-    margin-bottom: 1.5rem;
-    font-weight: 700;
+
+  .sidebar {
+    width: 200px;
   }
-  
-  .hero-section p {
-    font-size: 1.2rem;
-    color: white;
-    margin-bottom: 2rem;
-    line-height: 1.6;
+
+  .main-content {
+    margin-left: 200px;
   }
-  
-  /* Buttons */
-  .cta-buttons {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
+
+  .services-grid {
+    flex-direction: column;
   }
-  
-  .primary-btn {
-    background-color: #154360;
-    color: white;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: background-color 0.3s;
-  }
-  
-  .primary-btn:hover {
-    background-color: #1B4F72;
-  }
-  
-  .secondary-btn {
-    background-color: white;
-    color: #154360;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    text-decoration: none;
-    border: 2px solid #154360;
-    transition: all 0.3s;
-  }
-  
-  .secondary-btn:hover {
-    background-color: #EAF2F8;
-  }
-  
-  /* Features Section */
-  .features-section {
-    padding: 6rem 0;
-    background: #F2F3F4;
-  }
-  
-  .features-section h2 {
-    text-align: center;
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 3rem;
-  }
-  
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-  }
-  
-  .feature-card {
-    text-align: center;
-    padding: 2.5rem 2rem;
-    border-radius: 12px;
-    background: white;
-    transition: transform 0.3s;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  }
-  
-  .feature-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  /* Icons */
-  .feature-icon, .service-icon {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #EAF2F8;
-    border-radius: 50%;
-  }
-  
-  .icon {
-    color: #154360;
-    width: 32px;
-    height: 32px;
-  }
-  
-  /* CTA Section */
-  .cta-section {
-    padding: 6rem 0;
-    text-align: center;
-    background: linear-gradient(135deg, #154360, #1F618D);
-  }
-  
-  .cta-section h2, .cta-section p {
-    color: white;
-  }
-  
-  .cta-section .primary-btn {
-    background-color: #F1C40F;
-    color: black;
-  }
-  
-  .cta-section .primary-btn:hover {
-    background-color: #D4AC0D;
-  }
-  
+}
