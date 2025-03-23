@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Menu } from 'lucide-react';
 import './Finance.css';
 
 const FinancePage = () => {
@@ -16,6 +18,21 @@ const FinancePage = () => {
 
   return (
     <div className="finance-container">
+      {/* Navbar */}
+      <div className="top-nav">
+        <div className="logo-container">
+          <button className="toggle-menu">
+            <Menu size={24} />
+          </button>
+          <div className="logo">Wayfarer</div>
+        </div>
+        <ul className="nav-links">
+          <li><Link to="/finance">Finance</Link></li>
+          <li><Link to="/contact">Contact</Link></li>
+          <li><Link to="/sign-in" className="sign-in-btn">Sign In</Link></li>
+        </ul>
+      </div>
+
       <div className="header">
         <h1>Your Financial Overview</h1>
         <p className="subtitle">Track your expenses, set budget, and get customized financial decisions for your travels.</p>

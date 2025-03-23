@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import './Contact.css';
+import { Menu } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -39,6 +42,20 @@ const ContactPage = () => {
 
   return (
     <div className="contact-container">
+       <div className="top-nav">
+              <div className="logo-container">
+                <button className="toggle-menu">
+                  <Menu size={24} />
+                </button>
+                <div className="logo">Wayfarer</div>
+              </div>
+              <ul className="nav-links">
+                <li><Link to="/finance">Finance</Link></li>
+                <li><Link to="/contact">Contact</Link></li>
+                <li><Link to="/sign-in" className="sign-in-btn">Sign In</Link></li>
+              </ul>
+            </div>
+      
       <div className="contact-header">
         <h1>Contact Us</h1>
         <p className="subtitle">Have questions or need assistance? We're here to help with your travel needs.</p>
@@ -145,4 +162,3 @@ const ContactPage = () => {
 };
 
 export default ContactPage;
-
