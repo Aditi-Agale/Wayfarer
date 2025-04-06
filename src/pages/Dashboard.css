@@ -1,0 +1,145 @@
+.dashboard-container {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .dashboard-heading {
+    text-align: center;
+  }
+  
+  .dashboard-heading h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 1rem;
+  }
+  
+  .dashboard-heading p {
+    font-size: 1.125rem;
+    color: #4b5563;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .dashboard-card {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    text-decoration: none;
+    transition: box-shadow 0.3s ease;
+    color: inherit;
+  }
+  
+  .dashboard-card:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  .card-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .icon-wrapper {
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .trip-icon {
+    background-color: #dbeafe;
+    color: #2563eb;
+  }
+  
+  .expense-icon {
+    background-color: #d1fae5;
+    color: #10b981;
+  }
+  
+  .assistant-icon {
+    background-color: #ede9fe;
+    color: #8b5cf6;
+  }
+  
+  .icon {
+    height: 24px;
+    width: 24px;
+  }
+  
+  .card-content h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  .card-content p {
+    color: #6b7280;
+  }
+  
+  .recent-activity {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+  }
+  
+  .recent-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+  
+  .recent-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  .trend-icon {
+    color: #2563eb;
+  }
+  
+  .activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .activity-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f9fafb;
+    padding: 1rem;
+    border-radius: 0.75rem;
+  }
+  
+  .activity-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .activity-info h3 {
+    margin: 0;
+    font-weight: 500;
+    color: #1f2937;
+  }
+  
+  .activity-info p {
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+  
