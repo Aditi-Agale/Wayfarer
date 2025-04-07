@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { MessageSquare, Send } from 'lucide-react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
+const API_KEY = 'AIzaSyAoHuf7gmVhCQS8Cj2YEVYOpBtzEDV-z0Y'; // Replace with actual Gemini API key
+
 function AIAssistant() {
   const [message, setMessage] = useState('');
   const [conversation, setConversation] = useState([]);
@@ -10,8 +12,8 @@ function AIAssistant() {
   const [genAI, setGenAI] = useState(null);
 
   useEffect(() => {
-    const genAI = new GoogleGenerativeAI("AIzaSyAoHuf7gmVhCQS8Cj2YEVYOpBtzEDV-z0Y");
-    setGenAI(genAI);
+    const ai = new GoogleGenerativeAI(API_KEY);
+    setGenAI(ai);
   }, []);
 
   const handleSubmit = async (e) => {
@@ -19,34 +21,30 @@ function AIAssistant() {
     if (!message.trim() || !genAI) return;
 
     const userMessage = { role: 'user', content: message };
-    setConversation([...conversation, userMessage]);
+    setConversation(prev => [...prev, userMessage]);
     setMessage('');
     setIsLoading(true);
 
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-      const prompt = `You are a travel and finance assistant. Help with this request: ${message}
-      Focus on providing practical travel advice, budget recommendations, and specific suggestions.
-      If the user asks about a destination, include tips about local attractions, estimated costs, and best times to visit.`;
+      const result = await model.generateContent([
+        "You are a travel and finance assistant.",
+        "Focus on providing practical travel advice, budget recommendations, and specific suggestions.",
+        `User Query: ${message}`
+      ]);
 
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const text = await response.text();
+      const text = await result.response.text();
 
-      const aiResponse = {
+      const aiMessage = { role: 'assistant', content: text };
+      setConversation(prev => [...prev, aiMessage]);
+    } catch (err) {
+      console.error('Gemini AI Error:', err);
+      const aiMessage = {
         role: 'assistant',
-        content: text
+        content: "Sorry, I couldn't process your request. Please try again."
       };
-
-      setConversation(prev => [...prev, aiResponse]);
-    } catch (error) {
-      console.error('Error getting AI response:', error);
-      const errorResponse = {
-        role: 'assistant',
-        content: 'I apologize, but I encountered an error. Please try again or rephrase your question.'
-      };
-      setConversation(prev => [...prev, errorResponse]);
+      setConversation(prev => [...prev, aiMessage]);
     } finally {
       setIsLoading(false);
     }
@@ -73,6 +71,7 @@ function AIAssistant() {
               </ul>
             </div>
           )}
+
           {conversation.map((msg, index) => (
             <div
               key={index}
@@ -89,6 +88,7 @@ function AIAssistant() {
               </div>
             </div>
           ))}
+
           {isLoading && (
             <div className="chat-ai">
               <div className="chat-bubble ai-msg">
@@ -106,11 +106,7 @@ function AIAssistant() {
             placeholder="Ask about trip planning, budgeting, or recommendations..."
             className="chat-input"
           />
-          <button
-            type="submit"
-            disabled={isLoading}
-            className={`chat-send-btn ${isLoading ? 'disabled' : ''}`}
-          >
+          <button type="submit" disabled={isLoading} className="chat-send-btn">
             <Send className="send-icon" />
           </button>
         </form>

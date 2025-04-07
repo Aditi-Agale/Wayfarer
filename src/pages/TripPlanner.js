@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, MapPin, Clock, Plus } from 'lucide-react';
-import { db } from './firebase'; // 👈 import your Firebase setup
-import { collection, addDoc, getDocs } from 'firebase/firestore';
-import './TripPlanner.css';
+import { db } from './firebase'; // Make sure this file exports your Firestore `db`
+import {
+  collection,
+  addDoc,
+  getDocs,
+  serverTimestamp
+} from 'firebase/firestore';
+import './TripPlanner.css'; // Optional styling
 
 function TripPlanner() {
   const [trips, setTrips] = useState([]);
@@ -11,34 +16,55 @@ function TripPlanner() {
     destination: '',
     startDate: '',
     endDate: '',
-    activities: []
+    activities: [],
   });
 
-  // Fetch trips on load
+  // Fetch existing trips on component mount
   useEffect(() => {
     const fetchTrips = async () => {
-      const tripCollection = collection(db, 'trips');
-      const tripSnapshot = await getDocs(tripCollection);
-      const tripData = tripSnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setTrips(tripData);
+      try {
+        const tripCollection = collection(db, 'trips');
+        const tripSnapshot = await getDocs(tripCollection);
+        const tripData = tripSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setTrips(tripData);
+      } catch (error) {
+        console.error('Error fetching trips:', error);
+      }
     };
 
     fetchTrips();
   }, []);
 
+  // Submit new trip
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const tripRef = await addDoc(collection(db, 'trips'), newTrip);
-      const savedTrip = { ...newTrip, id: tripRef.id };
+      console.log('Submitting new trip:', newTrip);
+
+      const docRef = await addDoc(collection(db, 'trips'), {
+        destination: newTrip.destination,
+        startDate: newTrip.startDate,
+        endDate: newTrip.endDate,
+        activities: [],
+        createdAt: serverTimestamp()
+      });
+
+      console.log('Trip saved with ID:', docRef.id);
+
+      const savedTrip = {
+        id: docRef.id,
+        ...newTrip
+      };
+
       setTrips(prev => [...prev, savedTrip]);
       setNewTrip({ destination: '', startDate: '', endDate: '', activities: [] });
       setShowForm(false);
     } catch (error) {
-      console.error('Error saving trip:', error);
+      console.error('Error saving trip:', error.message);
+      alert('Error creating trip: ' + error.message);
     }
   };
 
@@ -121,17 +147,21 @@ function TripPlanner() {
         )}
 
         <div className="trip-list">
-          {trips.map((trip) => (
-            <div key={trip.id} className="trip-item">
-              <div className="trip-details">
-                <h3 className="trip-destination">{trip.destination}</h3>
-                <p className="trip-dates">
-                  {new Date(trip.startDate).toLocaleDateString()} -{' '}
-                  {new Date(trip.endDate).toLocaleDateString()}
-                </p>
+          {trips.length === 0 ? (
+            <p>No trips yet. Start by creating one!</p>
+          ) : (
+            trips.map((trip) => (
+              <div key={trip.id} className="trip-item">
+                <div className="trip-details">
+                  <h3 className="trip-destination">{trip.destination}</h3>
+                  <p className="trip-dates">
+                    {new Date(trip.startDate).toLocaleDateString()} -{' '}
+                    {new Date(trip.endDate).toLocaleDateString()}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>

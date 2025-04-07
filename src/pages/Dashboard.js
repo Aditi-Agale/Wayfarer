@@ -1,26 +1,42 @@
 import './Dashboard.css';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plane, Wallet, Bot, TrendingUp } from 'lucide-react';
+import { db } from './firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 function Dashboard() {
-  const recentActivities = [
-    {
-      id: 1,
-      title: 'Paris Trip Planning',
-      date: '2 hours ago',
-      type: 'trip',
-      icon: Plane
-    },
-    {
-      id: 2,
-      title: 'Hotel Booking',
-      date: 'Yesterday',
-      amount: 250,
-      type: 'expense',
-      icon: Wallet
-    }
-  ];
+  const [recentActivities, setRecentActivities] = useState([]);
+
+  useEffect(() => {
+    const fetchRecentActivities = async () => {
+      const expensesSnapshot = await getDocs(collection(db, 'expenses'));
+      const tripsSnapshot = await getDocs(collection(db, 'trips'));
+
+      const expenses = expensesSnapshot.docs.map(doc => ({
+        id: doc.id,
+        title: doc.data().description,
+        date: doc.data().date,
+        amount: doc.data().amount,
+        type: 'expense',
+        icon: Wallet
+      }));
+
+      const trips = tripsSnapshot.docs.map(doc => ({
+        id: doc.id,
+        title: doc.data().tripName || 'New Trip',
+        date: doc.data().startDate || new Date().toISOString().split('T')[0],
+        type: 'trip',
+        icon: Plane
+      }));
+
+      // Combine and sort by date (newest first)
+      const allActivities = [...expenses, ...trips].sort((a, b) => new Date(b.date) - new Date(a.date));
+      setRecentActivities(allActivities.slice(0, 6)); // limit to 6 recent activities
+    };
+
+    fetchRecentActivities();
+  }, []);
 
   return (
     <div className="dashboard-container">
@@ -73,23 +89,27 @@ function Dashboard() {
           <TrendingUp className="icon trend-icon" />
         </div>
         <div className="activity-list">
-          {recentActivities.map((activity) => (
-            <div key={activity.id} className="activity-item">
-              <div className="activity-info">
-                <activity.icon
-                  className={`icon ${activity.type === 'trip' ? 'trip-icon' : 'expense-icon'}`}
-                />
-                <div>
-                  <h3>{activity.title}</h3>
-                  <p>
-                    {activity.amount
-                      ? `$${activity.amount} - ${activity.date}`
-                      : activity.date}
-                  </p>
+          {recentActivities.length === 0 ? (
+            <p>No recent activity found.</p>
+          ) : (
+            recentActivities.map((activity) => (
+              <div key={activity.id} className="activity-item">
+                <div className="activity-info">
+                  <activity.icon
+                    className={`icon ${activity.type === 'trip' ? 'trip-icon' : 'expense-icon'}`}
+                  />
+                  <div>
+                    <h3>{activity.title}</h3>
+                    <p>
+                      {activity.amount
+                        ? `$${activity.amount} • ${new Date(activity.date).toLocaleDateString()}`
+                        : new Date(activity.date).toLocaleDateString()}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>
