@@ -107,4 +107,24 @@
       display: none;
     }
   }
+  .btn-signin {
+    background-color: #4F46E5;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: auto;
+    transition: background 0.3s ease;
+  }
+  
+  .btn-signin:hover {
+    background-color: #3730a3;
+  }
+  
+  .signin-btn {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+  }
   

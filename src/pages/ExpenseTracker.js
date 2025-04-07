@@ -1,6 +1,8 @@
 import './ExpenseTracker.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DollarSign, Plus, Trash2 } from 'lucide-react';
+import { db } from './firebase';
+import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
 
 function ExpenseTracker() {
   const [expenses, setExpenses] = useState([]);
@@ -11,19 +13,44 @@ function ExpenseTracker() {
     date: new Date().toISOString().split('T')[0]
   });
 
-  const handleSubmit = (e) => {
+  const expensesCollectionRef = collection(db, "expenses");
+
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      const data = await getDocs(expensesCollectionRef);
+      setExpenses(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+    };
+    fetchExpenses();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setExpenses([...expenses, { ...newExpense, id: Date.now() }]);
-    setNewExpense({
-      description: '',
-      amount: '',
-      category: 'transportation',
-      date: new Date().toISOString().split('T')[0]
-    });
+    try {
+      const docRef = await addDoc(expensesCollectionRef, {
+        ...newExpense,
+        amount: parseFloat(newExpense.amount),
+        tripId: "default-trip" // optional: change this per trip
+      });
+
+      setExpenses([...expenses, { ...newExpense, id: docRef.id }]);
+      setNewExpense({
+        description: '',
+        amount: '',
+        category: 'transportation',
+        date: new Date().toISOString().split('T')[0]
+      });
+    } catch (error) {
+      alert("Error adding expense: " + error.message);
+    }
   };
 
-  const deleteExpense = (id) => {
-    setExpenses(expenses.filter(expense => expense.id !== id));
+  const deleteExpense = async (id) => {
+    try {
+      await deleteDoc(doc(db, "expenses", id));
+      setExpenses(expenses.filter(expense => expense.id !== id));
+    } catch (error) {
+      alert("Error deleting expense: " + error.message);
+    }
   };
 
   const totalExpenses = expenses.reduce((sum, expense) => sum + Number(expense.amount), 0);

@@ -36,6 +36,11 @@ function Navbar() {
             ))}
           </div>
 
+          {/* Sign In Button (desktop) */}
+          <div className="signin-btn desktop-only">
+            <Link to="/signin" className="btn-signin">Sign In</Link>
+          </div>
+
           <button
             className="menu-btn mobile-only"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -57,6 +62,11 @@ function Navbar() {
                 <span>{label}</span>
               </Link>
             ))}
+
+            {/* Sign In Button (mobile) */}
+            <Link to="/signin" className="nav-link" onClick={() => setIsMenuOpen(false)}>
+              <span>Sign In</span>
+            </Link>
           </div>
         )}
       </div>
