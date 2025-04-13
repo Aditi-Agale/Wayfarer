@@ -2,8 +2,12 @@
     max-width: 900px;
     margin: 0 auto;
     padding: 1rem;
+    animation: fadeInUp 0.6s ease forwards;
   }
-  
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
   .ai-box {
     background-color: #fff;
     border-radius: 12px;
@@ -24,11 +28,24 @@
     color: #111827;
   }
   
-  .icon-blue {
+  /* .icon-blue {
     color: #2563eb;
     height: 24px;
     width: 24px;
+  } */
+  .icon-blue {
+    width: 20px;
+    height: 20px;
+    padding: 4px;
+    background-color: #2563eb;
+    color: white;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
   }
+  
   
   .chat-window {
     height: 400px;
@@ -107,6 +124,9 @@
   .chat-form {
     display: flex;
     gap: 0.5rem;
+  }
+  .chat-form input{
+    padding:15px;
   }
   
   .chat-input {

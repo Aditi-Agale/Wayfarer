@@ -67,7 +67,6 @@ function TripPlanner() {
       alert('Error creating trip: ' + error.message);
     }
   };
-
   return (
     <div className="trip-container">
       <div className="trip-card">
@@ -85,10 +84,11 @@ function TripPlanner() {
               <div className="form-group">
                 <label className="form-label">Destination</label>
                 <div className="form-input-wrapper">
-                  <MapPin className="icon gray" />
+                  <MapPin className="icon gray location" />
                   <input
                     type="text"
                     value={newTrip.destination}
+                    placeholder='Where are you going?'
                     onChange={(e) =>
                       setNewTrip({ ...newTrip, destination: e.target.value })
                     }
@@ -101,7 +101,7 @@ function TripPlanner() {
               <div className="form-group">
                 <label className="form-label">Start Date</label>
                 <div className="form-input-wrapper">
-                  <Calendar className="icon gray" />
+                  <Calendar className="icon gray calendar" />
                   <input
                     type="date"
                     value={newTrip.startDate}
@@ -117,7 +117,7 @@ function TripPlanner() {
               <div className="form-group">
                 <label className="form-label">End Date</label>
                 <div className="form-input-wrapper">
-                  <Clock className="icon gray" />
+                  <Clock className="icon gray clock" />
                   <input
                     type="date"
                     value={newTrip.endDate}
