@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "./pages/firebase"; // ✅ Correct import
+// import { auth } from "./firebase"; // ✅ correct path now
+
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import "./SignIn.css";
 

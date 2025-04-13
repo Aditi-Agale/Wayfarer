@@ -1,3 +1,7 @@
+body{
+  background: linear-gradient(to bottom right, #cce5ff, #e6f2ff); 
+}
+
 .dashboard-container {
     padding: 2rem;
     display: flex;
@@ -29,18 +33,24 @@
     gap: 1.5rem;
   }
   
-  .dashboard-card {
+   .dashboard-card {
     background-color: #ffffff;
     border-radius: 1rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 7px 10px rgba(0, 0, 0, 0.1);
     padding: 1.5rem;
     text-decoration: none;
     transition: box-shadow 0.3s ease;
     color: inherit;
+    animation: fadeInUp 0.6s ease forwards;
+    border-left:5px solid  #0ea5e9;;
+  } 
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
   }
-  
   .dashboard-card:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
   }
   
   .card-content {
@@ -75,6 +85,11 @@
   .icon {
     height: 24px;
     width: 24px;
+    background-color: rgba(255, 255, 255, 0.4);
+  padding: 3px;
+  border-radius: 14px;
+  font-size: 1.1rem;
+  margin-bottom: 4px;
   }
   
   .card-content h2 {
@@ -90,8 +105,9 @@
   .recent-activity {
     background-color: #ffffff;
     border-radius: 1rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 7px 10px rgba(0, 0, 0, 0.1);
     padding: 1.5rem;
+    animation: fadeInUp 0.6s ease forwards;
   }
   
   .recent-header {
@@ -109,6 +125,7 @@
   
   .trend-icon {
     color: #2563eb;
+    
   }
   
   .activity-list {

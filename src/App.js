@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import TripPlanner from './pages/TripPlanner';
 import ExpenseTracker from './pages/ExpenseTracker';
 import AIAssistant from './pages/AIAssistant';
+import SignIn from './SignIn'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/planner" element={<TripPlanner />} />
             <Route path="/expenses" element={<ExpenseTracker />} />
             <Route path="/assistant" element={<AIAssistant />} />
+            {/* <Route path="/signin" element={<SignIn />} /> */}
           </Routes>
         </main>
       </div>
