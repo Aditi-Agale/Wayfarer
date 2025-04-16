@@ -1,4 +1,4 @@
-import './Dashboard.css';
+import './Dashboard.css'; 
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plane, Wallet, Bot, TrendingUp } from 'lucide-react';
@@ -111,6 +111,14 @@ function Dashboard() {
             ))
           )}
         </div>
+      </div>
+
+      {/* Graph Container */}
+      <div className="graph-container">
+        {/* Add your graph here */}
+        <h3>Graph Section</h3>
+        {/* Example: a placeholder for the graph */}
+        <div className="graph-placeholder">Graph will be here</div>
       </div>
     </div>
   );
