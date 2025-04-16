@@ -18,7 +18,7 @@ function App() {
             <Route path="/planner" element={<TripPlanner />} />
             <Route path="/expenses" element={<ExpenseTracker />} />
             <Route path="/assistant" element={<AIAssistant />} />
-            {/* <Route path="/signin" element={<SignIn />} /> */}
+            <Route path="/signin" element={<SignIn />} />
           </Routes>
         </main>
       </div>
