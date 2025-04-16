@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { MessageSquare, Send } from 'lucide-react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const API_KEY = 'AIzaSyAoHuf7gmVhCQS8Cj2YEVYOpBtzEDV-z0Y'; // Replace with actual Gemini API key
+const API_KEY = 'AIzaSyAoHuf7gmVhCQS8Cj2YEVYOpBtzEDV-z0Y'; // Replace this with your real key
 
 function AIAssistant() {
   const [message, setMessage] = useState('');
@@ -19,23 +19,40 @@ function AIAssistant() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!message.trim() || !genAI) return;
-
+  
     const userMessage = { role: 'user', content: message };
     setConversation(prev => [...prev, userMessage]);
     setMessage('');
     setIsLoading(true);
-
+  
     try {
-      const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
-
-      const result = await model.generateContent([
-        "You are a travel and finance assistant.",
-        "Focus on providing practical travel advice, budget recommendations, and specific suggestions.",
-        `User Query: ${message}`
-      ]);
-
+      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
+  
+      const chat = model.startChat({
+        history: [
+          {
+            role: 'user',
+            parts: [{
+              text: `You are a helpful and concise AI Travel Assistant. You can help users with:
+  • Planning trip itineraries
+  • Destination recommendations
+  • Budget planning and tips
+  • Local attractions and activities
+  • Travel safety advice
+  
+  Please respond with clear and friendly travel advice.`
+            }]
+          }
+        ],
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 1024,
+        },
+      });
+  
+      const result = await chat.sendMessage(message);
       const text = await result.response.text();
-
+  
       const aiMessage = { role: 'assistant', content: text };
       setConversation(prev => [...prev, aiMessage]);
     } catch (err) {
@@ -75,15 +92,9 @@ function AIAssistant() {
           {conversation.map((msg, index) => (
             <div
               key={index}
-              className={`chat-bubble-row ${
-                msg.role === 'user' ? 'chat-user' : 'chat-ai'
-              }`}
+              className={`chat-bubble-row ${msg.role === 'user' ? 'chat-user' : 'chat-ai'}`}
             >
-              <div
-                className={`chat-bubble ${
-                  msg.role === 'user' ? 'user-msg' : 'ai-msg'
-                }`}
-              >
+              <div className={`chat-bubble ${msg.role === 'user' ? 'user-msg' : 'ai-msg'}`}>
                 {msg.content}
               </div>
             </div>
