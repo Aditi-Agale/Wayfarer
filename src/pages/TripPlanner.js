@@ -1,25 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, MapPin, Clock, Plus } from 'lucide-react';
-import { db } from './firebase'; // Make sure this file exports your Firestore `db`
+import { Calendar, MapPin, Clock, Plus, Trash2, Edit, CheckCircle, XCircle } from 'lucide-react';
+import { db } from './firebase';
 import {
   collection,
   addDoc,
   getDocs,
+  deleteDoc,
+  doc,
+  updateDoc,
   serverTimestamp
 } from 'firebase/firestore';
-import './TripPlanner.css'; // Optional styling
+import './TripPlanner.css';
 
 function TripPlanner() {
   const [trips, setTrips] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [currentTripId, setCurrentTripId] = useState(null);
   const [newTrip, setNewTrip] = useState({
     destination: '',
     startDate: '',
     endDate: '',
     activities: [],
   });
+  const [activityInput, setActivityInput] = useState('');
 
-  // Fetch existing trips on component mount
   useEffect(() => {
     const fetchTrips = async () => {
       try {
@@ -38,35 +43,95 @@ function TripPlanner() {
     fetchTrips();
   }, []);
 
-  // Submit new trip
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log('Submitting new trip:', newTrip);
-
-      const docRef = await addDoc(collection(db, 'trips'), {
+      const tripData = {
         destination: newTrip.destination,
         startDate: newTrip.startDate,
         endDate: newTrip.endDate,
-        activities: [],
-        createdAt: serverTimestamp()
-      });
-
-      console.log('Trip saved with ID:', docRef.id);
-
-      const savedTrip = {
-        id: docRef.id,
-        ...newTrip
+        activities: newTrip.activities,
+        createdAt: serverTimestamp(),
       };
 
-      setTrips(prev => [...prev, savedTrip]);
-      setNewTrip({ destination: '', startDate: '', endDate: '', activities: [] });
-      setShowForm(false);
+      if (editMode) {
+        const tripRef = doc(db, 'trips', currentTripId);
+        await updateDoc(tripRef, tripData);
+        const updatedTrips = trips.map(trip =>
+          trip.id === currentTripId ? { ...trip, ...tripData } : trip
+        );
+        setTrips(updatedTrips);
+      } else {
+        const docRef = await addDoc(collection(db, 'trips'), tripData);
+        setTrips(prev => [...prev, { id: docRef.id, ...tripData }]);
+      }
+
+      resetForm();
     } catch (error) {
-      console.error('Error saving trip:', error.message);
+      console.error('Error saving trip:', error);
       alert('Error creating trip: ' + error.message);
     }
   };
+
+  const handleDelete = async (id) => {
+    try {
+      const tripRef = doc(db, 'trips', id);
+      await deleteDoc(tripRef);
+      setTrips(trips.filter(trip => trip.id !== id));
+    } catch (error) {
+      console.error('Error deleting trip:', error);
+      alert('Error deleting trip: ' + error.message);
+    }
+  };
+
+  const handleEdit = (trip) => {
+    setEditMode(true);
+    setCurrentTripId(trip.id);
+    setNewTrip({
+      destination: trip.destination,
+      startDate: trip.startDate,
+      endDate: trip.endDate,
+      activities: trip.activities,
+    });
+    setShowForm(true);
+  };
+
+  const handleActivityAdd = () => {
+    if (activityInput) {
+      setNewTrip({
+        ...newTrip,
+        activities: [...newTrip.activities, activityInput],
+      });
+      setActivityInput('');
+    }
+  };
+
+  const handleActivityDelete = (index) => {
+    const updatedActivities = newTrip.activities.filter((_, i) => i !== index);
+    setNewTrip({ ...newTrip, activities: updatedActivities });
+  };
+
+  const resetForm = () => {
+    setNewTrip({ destination: '', startDate: '', endDate: '', activities: [] });
+    setActivityInput('');
+    setEditMode(false);
+    setShowForm(false);
+  };
+
+  const handleViewTrip = (trip) => {
+    alert(`Destination: ${trip.destination}\nActivities: ${trip.activities.join(', ')}`);
+  };
+
+  const handleSortTrips = () => {
+    const sortedTrips = [...trips].sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+    setTrips(sortedTrips);
+  };
+
+  const handleFilterTrips = (filter) => {
+    const filteredTrips = trips.filter(trip => trip.destination.toLowerCase().includes(filter.toLowerCase()));
+    setTrips(filteredTrips);
+  };
+
   return (
     <div className="trip-container">
       <div className="trip-card">
@@ -76,6 +141,18 @@ function TripPlanner() {
             <Plus className="icon" />
             <span>New Trip</span>
           </button>
+        </div>
+
+        <div className="trip-actions">
+          <button onClick={handleSortTrips} className="sort-btn">
+            Sort by Date
+          </button>
+          <input
+            type="text"
+            placeholder="Search by destination"
+            onChange={(e) => handleFilterTrips(e.target.value)}
+            className="search-input"
+          />
         </div>
 
         {showForm && (
@@ -88,7 +165,7 @@ function TripPlanner() {
                   <input
                     type="text"
                     value={newTrip.destination}
-                    placeholder='Where are you going?'
+                    placeholder="Where are you going?"
                     onChange={(e) =>
                       setNewTrip({ ...newTrip, destination: e.target.value })
                     }
@@ -131,16 +208,38 @@ function TripPlanner() {
               </div>
             </div>
 
+            <div className="form-group">
+              <label className="form-label">Activities</label>
+              <div className="form-input-wrapper">
+                <input
+                  type="text"
+                  value={activityInput}
+                  onChange={(e) => setActivityInput(e.target.value)}
+                  placeholder="Add an activity"
+                  className="form-input"
+                />
+                <button type="button" onClick={handleActivityAdd} className="add-activity-btn">
+                  <Plus className="icon" />
+                </button>
+              </div>
+              <ul className="activities-list">
+                {newTrip.activities.map((activity, index) => (
+                  <li key={index} className="activity-item">
+                    {activity}
+                    <button type="button" onClick={() => handleActivityDelete(index)} className="delete-activity-btn">
+                      <XCircle className="icon" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
             <div className="form-actions">
-              <button
-                type="button"
-                onClick={() => setShowForm(false)}
-                className="cancel-btn"
-              >
+              <button type="button" onClick={resetForm} className="cancel-btn">
                 Cancel
               </button>
               <button type="submit" className="submit-btn">
-                Create Trip
+                {editMode ? 'Update Trip' : 'Create Trip'}
               </button>
             </div>
           </form>
@@ -152,12 +251,20 @@ function TripPlanner() {
           ) : (
             trips.map((trip) => (
               <div key={trip.id} className="trip-item">
-                <div className="trip-details">
+                <div className="trip-details" onClick={() => handleViewTrip(trip)}>
                   <h3 className="trip-destination">{trip.destination}</h3>
                   <p className="trip-dates">
                     {new Date(trip.startDate).toLocaleDateString()} -{' '}
                     {new Date(trip.endDate).toLocaleDateString()}
                   </p>
+                </div>
+                <div className="trip-actions">
+                  <button onClick={() => handleEdit(trip)} className="edit-btn">
+                    <Edit className="icon" />
+                  </button>
+                  <button onClick={() => handleDelete(trip.id)} className="delete-btn">
+                    <Trash2 className="icon" />
+                  </button>
                 </div>
               </div>
             ))
