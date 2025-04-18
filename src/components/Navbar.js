@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Plane, Wallet, Calendar, Bot, Menu } from 'lucide-react';
+import { Plane, Wallet, Calendar, Bot, Menu,User } from 'lucide-react';
 import './Navbar.css';
 
 function Navbar() {
@@ -12,6 +12,7 @@ function Navbar() {
     { path: '/planner', label: 'Trip Planner', icon: Plane },
     { path: '/expenses', label: 'Expenses', icon: Wallet },
     { path: '/assistant', label: 'AI Assistant', icon: Bot },
+    { path: '/profile', label: 'Profile', icon: User }
   ];
 
   return (

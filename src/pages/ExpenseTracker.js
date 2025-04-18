@@ -202,8 +202,10 @@ function ExpenseTracker() {
           <div className="expense-summary">
             <h3>Summary</h3>
             {Object.entries(expenseSummary).map(([category, amount]) => (
-              <p key={category}>{category}: ${amount.toFixed(2)}</p>
-            ))}
+  <p key={category}>
+    {category}: ${parseFloat(amount || 0).toFixed(2)}
+  </p>
+))}
           </div>
 
           <div className="expense-chart">
