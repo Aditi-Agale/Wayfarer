@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { MessageSquare, Send } from 'lucide-react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const API_KEY = 'AIzaSyAoHuf7gmVhCQS8Cj2YEVYOpBtzEDV-z0Y'; // Replace this with your real key
+const API_KEY = 'GEMINI_API_KEY'; // Replace this with your real key
 
 function AIAssistant() {
   const [message, setMessage] = useState('');
