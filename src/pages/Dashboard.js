@@ -1,12 +1,18 @@
-import './Dashboard.css'; 
+import './Dashboard.css';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plane, Wallet, Bot, TrendingUp } from 'lucide-react';
 import { db } from './firebase';
 import { collection, getDocs } from 'firebase/firestore';
+import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+
+// Registering chart.js components
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 function Dashboard() {
   const [recentActivities, setRecentActivities] = useState([]);
+  const [graphData, setGraphData] = useState(null);
 
   useEffect(() => {
     const fetchRecentActivities = async () => {
@@ -30,12 +36,55 @@ function Dashboard() {
         icon: Plane
       }));
 
-      // Combine and sort by date (newest first)
       const allActivities = [...expenses, ...trips].sort((a, b) => new Date(b.date) - new Date(a.date));
       setRecentActivities(allActivities.slice(0, 6)); // limit to 6 recent activities
     };
 
     fetchRecentActivities();
+  }, []);
+
+  useEffect(() => {
+    const fetchTripsData = async () => {
+      const tripsSnapshot = await getDocs(collection(db, 'trips'));
+      const trips = tripsSnapshot.docs.map(doc => ({
+        date: doc.data().startDate,
+        tripName: doc.data().tripName
+      }));
+
+      if (trips.length === 0) {
+        setGraphData(null);
+        return;
+      }
+
+      // Group trips by month
+      const groupedData = trips.reduce((acc, trip) => {
+        const month = new Date(trip.date).toLocaleString('default', { month: 'long', year: 'numeric' });
+        if (acc[month]) {
+          acc[month] += 1; // Increment the trip count for the month
+        } else {
+          acc[month] = 1; // First trip in this month
+        }
+        return acc;
+      }, {});
+
+      const months = Object.keys(groupedData);
+      const tripCounts = months.map(month => groupedData[month]);
+
+      setGraphData({
+        labels: months,
+        datasets: [
+          {
+            label: 'Trips Over Time',
+            data: tripCounts,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            fill: true
+          }
+        ]
+      });
+    };
+
+    fetchTripsData();
   }, []);
 
   return (
@@ -114,11 +163,13 @@ function Dashboard() {
       </div>
 
       {/* Graph Container */}
-      <div className="graph-container">
-        {/* Add your graph here */}
-        <h3>Graph Section</h3>
-        {/* Example: a placeholder for the graph */}
-        <div className="graph-placeholder">Graph will be here</div>
+      <div className="graph-container" style={{ width: '100%', height: '400px' }}>
+        <h3>Trips Over Time</h3>
+        {graphData ? (
+          <Line data={graphData} options={{ responsive: true, maintainAspectRatio: false }} />
+        ) : (
+          <p>No trip data available.</p>
+        )}
       </div>
     </div>
   );
