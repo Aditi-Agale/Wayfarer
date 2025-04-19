@@ -1,4 +1,4 @@
-import './ExpenseTracker.css'; 
+import './ExpenseTracker.css';  
 import React, { useState, useEffect } from 'react';
 import { DollarSign, Plus, Trash2, Edit } from 'lucide-react';
 import { db } from './firebase';
@@ -14,7 +14,7 @@ function ExpenseTracker() {
     date: new Date().toISOString().split('T')[0]
   });
   const [filter, setFilter] = useState({ category: 'all', date: '' });
-  const [editingExpense, setEditingExpense] = useState(null); // For editing
+  const [editingExpense, setEditingExpense] = useState(null);
   const expensesCollectionRef = collection(db, "expenses");
 
   useEffect(() => {
@@ -33,7 +33,7 @@ function ExpenseTracker() {
         amount: parseFloat(newExpense.amount),
         tripId: "default-trip"
       });
-      setExpenses([...expenses, { ...newExpense, id: docRef.id }]);
+      setExpenses([...expenses, { ...newExpense, amount: parseFloat(newExpense.amount), id: docRef.id }]);
       setNewExpense({
         description: '',
         amount: '',
@@ -70,7 +70,11 @@ function ExpenseTracker() {
         date: newExpense.date
       });
 
-      setExpenses(expenses.map(exp => (exp.id === editingExpense.id ? newExpense : exp)));
+      setExpenses(expenses.map(exp => 
+        exp.id === editingExpense.id 
+          ? { ...newExpense, amount: parseFloat(newExpense.amount), id: editingExpense.id } 
+          : exp
+      ));
       setEditingExpense(null);
       setNewExpense({
         description: '',
@@ -101,7 +105,9 @@ function ExpenseTracker() {
 
   const chartData = [
     ['Category', 'Amount'],
-    ...Object.entries(expenseSummary).map(([category, amount]) => [category, amount])
+    ...Object.entries(expenseSummary)
+      .filter(([_, amount]) => amount > 0) // Only include non-zero amounts
+      .map(([category, amount]) => [category, amount])
   ];
 
   return (
@@ -202,21 +208,25 @@ function ExpenseTracker() {
           <div className="expense-summary">
             <h3>Summary</h3>
             {Object.entries(expenseSummary).map(([category, amount]) => (
-  <p key={category}>
-    {category}: ${parseFloat(amount || 0).toFixed(2)}
-  </p>
-))}
+              <p key={category}>
+                {category}: ${parseFloat(amount || 0).toFixed(2)}
+              </p>
+            ))}
           </div>
 
           <div className="expense-chart">
             <h3>Expenses by Category</h3>
-            <Chart
-              chartType="PieChart"
-              data={chartData}
-              options={{ title: 'Expense Distribution by Category', is3D: true }}
-              width="100%"
-              height="300px"
-            />
+            {chartData.length > 1 ? (
+              <Chart
+                chartType="PieChart"
+                data={chartData}
+                options={{ title: 'Expense Distribution by Category', is3D: true }}
+                width="100%"
+                height="300px"
+              />
+            ) : (
+              <p>No expense data to display.</p>
+            )}
           </div>
         </div>
 
