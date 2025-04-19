@@ -2,11 +2,17 @@ import React, { useState } from 'react';
 import './Profile.css';
 
 export default function ProfilePage() {
-  const [activeTab, setActiveTab] = useState('profile');
+  const [isEditing, setIsEditing] = useState(false);
+  const [name, setName] = useState('Alex Morgan');
+  const [location, setLocation] = useState('New York, USA');
+
+  const handleSave = () => {
+    setIsEditing(false);
+    // You can add logic to save data to a server or database here
+  };
 
   return (
     <div className="profile-container">
-      {/* Top Navigation Bar */}
       {/* Profile Header */}
       <div className="profile-header">
         <div className="profile-header-content">
@@ -14,46 +20,43 @@ export default function ProfilePage() {
             <span className="avatar-placeholder">👤</span>
           </div>
           <div className="profile-info">
-            <h2 className="profile-name">Alex Morgan</h2>
-            <p className="profile-location">
-              <span className="location-dot">📍</span> New York, USA
-            </p>
+            {isEditing ? (
+              <>
+                <input
+                  type="text"
+                  className="edit-input"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <input
+                  type="text"
+                  className="edit-input"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                />
+              </>
+            ) : (
+              <>
+                <h2 className="profile-name">{name}</h2>
+                <p className="profile-location">
+                  <span className="location-dot">📍</span> {location}
+                </p>
+              </>
+            )}
             <div className="profile-badges">
               <span className="badge premium-badge">Premium Member</span>
               <span className="badge budget-badge">Budget Pro</span>
             </div>
           </div>
-          <button className="edit-profile-button">Edit Profile</button>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="tabs-container">
-        <div className="tabs-content">
-          <button 
-            className={`tab ${activeTab === 'profile' ? 'active-tab' : ''}`}
-            onClick={() => setActiveTab('profile')}
-          >
-            Profile
-          </button>
-          <button 
-            className={`tab ${activeTab === 'trips' ? 'active-tab' : ''}`}
-            onClick={() => setActiveTab('trips')}
-          >
-            My Trips
-          </button>
-          <button 
-            className={`tab ${activeTab === 'finances' ? 'active-tab' : ''}`}
-            onClick={() => setActiveTab('finances')}
-          >
-            Finances
-          </button>
-          <button 
-            className={`tab ${activeTab === 'ai' ? 'active-tab' : ''}`}
-            onClick={() => setActiveTab('ai')}
-          >
-            AI Assistant
-          </button>
+          {isEditing ? (
+            <button className="edit-profile-button" onClick={handleSave}>
+              Save
+            </button>
+          ) : (
+            <button className="edit-profile-button" onClick={() => setIsEditing(true)}>
+              Edit Profile
+            </button>
+          )}
         </div>
       </div>
 
@@ -69,7 +72,7 @@ export default function ProfilePage() {
             <p className="stat-value">$8,500</p>
             <p className="stat-change positive">+12% from last year</p>
           </div>
-          
+
           <div className="stat-card">
             <div className="stat-header">
               <h3 className="stat-title">Monthly Savings</h3>
@@ -78,7 +81,7 @@ export default function ProfilePage() {
             <p className="stat-value">$1,250</p>
             <p className="stat-change positive">On track for next trip</p>
           </div>
-          
+
           <div className="stat-card">
             <div className="stat-header">
               <h3 className="stat-title">Next Trip</h3>

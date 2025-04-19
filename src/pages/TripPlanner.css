@@ -233,6 +233,7 @@ body {
 .edit-btn:hover,
 .delete-btn:hover {
   transform: scale(1.1);
+  background-color: #ccc;
 }
 
 .delete-btn {
