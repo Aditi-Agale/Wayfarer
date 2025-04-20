@@ -1,70 +1,95 @@
-# WAYFARER
+# Wayfarer – AI-Powered Travel & Finance Planning Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Wayfarer is a smart assistant designed to make your travel dreams come true—on a budget. With real-time AI, intuitive budget planning, and personal itinerary generation, you can now plan trips in minutes instead of days.
 
-## Available Scripts
+## Table of Contents
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Installation](#installation)
+- [About Us](#about-us)
 
-In the project directory, you can run:
 
-### `npm start`
+## Project Overview
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+**Planning trips can be chaotic.** Balancing fun and finances often means juggling multiple apps—flight booking, Google Maps, budgeting spreadsheets, and more.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+**Wayfarer** solves this by combining everything into one platform. You simply tell the app where you want to go, for how long, and your budget—and our AI handles the rest: building your itinerary, allocating your funds, suggesting affordable experiences, and tracking expenses in real time.
 
-### `npm test`
+### Our Vision:
+To create an intelligent assistant that enables users to plan more, worry less, and travel smart.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Features
 
-### `npm run build`
+- **🧭 Trip Planner:**  
+  Select your destination, number of days, travel mode, and total budget. The app takes care of the rest.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **📊 Budget Allocator:**  
+  Automatically split your budget into categories: accommodation, food, transportation, experiences, and shopping.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **🤖 AI Assistant (Gemini Integration):**  
+  Chat with an intelligent travel advisor. Ask:  
+  > "Plan a 4-day Goa trip under ₹20,000"  
+  Receive personalized itineraries, food joints, activity ideas, and budget tweaks—all in seconds.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **📆 Day-Wise Itinerary Generator:**  
+  AI builds a day-by-day plan optimized for your duration, location, and budget.
 
-### `npm run eject`
+- **💸 Expense Tracker:**  
+  Input real-time spending during your trip and compare it to the initial plan. The app provides live recommendations and warns about overspending.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **📱 Cross-Platform:**  
+  Responsive design for mobile and desktop. Travel planning on the go.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **📌 Future Enhancements:**  
+  - Flight and hotel bookings  
+  - Weather updates  
+  - Currency exchange insights  
+  - Google Maps & Calendar integration
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Technologies Used
 
-## Learn More
+| Layer       | Tech Stack                      |
+|-------------|----------------------------------|
+| **Frontend** | React.js (Interactive UI)       |
+| **Backend**  | Firebase Authentication         |
+| **Database** | Firebase Firestore              |
+| **AI Layer** | Gemini API (Chatbot Integration)|
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
+## Installation
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Follow these steps to run the project locally:
 
-### Code Splitting
+### 1. Clone the Repository
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+git clone https://github.com/Aditi-Agale/Wayfarer.git
+cd Wayfarer
+```
+### 2. Install Dependencies
+```bash
+npm install
+```
+### 3. Run the application
+```bash
+npm start
+```
+## About Us
+We are the innovators behind AI-Based Travel and Finance Planner, a platform designed to make travel planning easier, smarter, and more cost-efficient using AI technology.
 
-### Analyzing the Bundle Size
+Aditi Agale
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Riya Joshi
 
-### Making a Progressive Web App
+Our shared vision is to bridge the gap between travelers and the complexity of managing finances, trip planning, and budget allocation. The AI-powered platform helps users plan their trips seamlessly by offering tailored itineraries, budget management, and expense tracking—all through an easy-to-use interface.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+We aim to revolutionize the way people plan their travels by integrating real-time AI-driven recommendations. Our goal is to make travel affordable, stress-free, and efficient, empowering travelers with all the tools they need in one platform.
 
-### Advanced Configuration
+We believe that everyone should have access to an intelligent travel assistant that simplifies the complexities of trip planning. By leveraging state-of-the-art AI technology, we aim to provide personalized travel experiences that not only save time but also ensure that users stay within their budgets.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+We are committed to pushing the boundaries of what AI can do for travel and finance, and we believe this is just the beginning. Join us as we redefine the travel planning experience for the future!
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Happy Traveling! 🌍✨
