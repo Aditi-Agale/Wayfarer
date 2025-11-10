@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Plane, Wallet, Calendar, Bot, Menu,User } from 'lucide-react';
+import { Plane, Wallet, Calendar, Bot, Menu, User } from 'lucide-react';
 import './Navbar.css';
 
-function Navbar() {
+function Navbar({ user }) {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -15,6 +15,10 @@ function Navbar() {
     { path: '/profile', label: 'Profile', icon: User }
   ];
 
+  const filteredNavItems = user
+    ? navItems.filter(item => item.path === '/profile' || item.path === '/assistant')
+    : navItems.filter(item => item.path !== '/profile' && item.path !== '/assistant');
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -25,7 +29,7 @@ function Navbar() {
           </Link>
 
           <div className="navbar-links desktop-only">
-            {navItems.map(({ path, label, icon: Icon }) => (
+            {filteredNavItems.map(({ path, label, icon: Icon }) => (
               <Link
                 key={path}
                 to={path}
@@ -38,9 +42,11 @@ function Navbar() {
           </div>
 
           {/* Sign In Button (desktop) */}
-          <div className="signin-btn desktop-only">
-            <Link to="/signin" className="btn-signin">Sign In</Link>
-          </div>
+          {!user && (
+            <div className="signin-btn desktop-only">
+              <Link to="/signin" className="btn-signin">Sign In</Link>
+            </div>
+          )}
 
           <button
             className="menu-btn mobile-only"
@@ -52,7 +58,7 @@ function Navbar() {
 
         {isMenuOpen && (
           <div className="navbar-links mobile-only">
-            {navItems.map(({ path, label, icon: Icon }) => (
+            {filteredNavItems.map(({ path, label, icon: Icon }) => (
               <Link
                 key={path}
                 to={path}
@@ -65,9 +71,11 @@ function Navbar() {
             ))}
 
             {/* Sign In Button (mobile) */}
-            <Link to="/signin" className="nav-link" onClick={() => setIsMenuOpen(false)}>
-              <span>Sign In</span>
-            </Link>
+            {!user && (
+              <Link to="/signin" className="nav-link" onClick={() => setIsMenuOpen(false)}>
+                <span>Sign In</span>
+              </Link>
+            )}
           </div>
         )}
       </div>

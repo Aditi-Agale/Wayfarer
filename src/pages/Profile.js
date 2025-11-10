@@ -1,14 +1,28 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { auth } from './firebase';
+import { signOut } from 'firebase/auth';
 import './Profile.css';
 
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState('Alex Morgan');
   const [location, setLocation] = useState('New York, USA');
+  const navigate = useNavigate();
 
   const handleSave = () => {
     setIsEditing(false);
     // You can add logic to save data to a server or database here
+  };
+
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        navigate('/signin');
+      })
+      .catch(error => {
+        console.error('Logout Error:', error);
+      });
   };
 
   return (
@@ -17,7 +31,7 @@ export default function ProfilePage() {
       <div className="profile-header">
         <div className="profile-header-content">
           <div className="profile-avatar">
-            <span className="avatar-placeholder">👤</span>
+            <span className="avatar-placeholder">?</span>
           </div>
           <div className="profile-info">
             {isEditing ? (
@@ -39,7 +53,7 @@ export default function ProfilePage() {
               <>
                 <h2 className="profile-name">{name}</h2>
                 <p className="profile-location">
-                  <span className="location-dot">📍</span> {location}
+                  <span className="location-dot">?</span> {location}
                 </p>
               </>
             )}
@@ -67,7 +81,7 @@ export default function ProfilePage() {
           <div className="stat-card">
             <div className="stat-header">
               <h3 className="stat-title">Travel Budget</h3>
-              <div className="stat-icon budget-icon">💳</div>
+              <div className="stat-icon budget-icon">?</div>
             </div>
             <p className="stat-value">$8,500</p>
             <p className="stat-change positive">+12% from last year</p>
@@ -76,7 +90,7 @@ export default function ProfilePage() {
           <div className="stat-card">
             <div className="stat-header">
               <h3 className="stat-title">Monthly Savings</h3>
-              <div className="stat-icon savings-icon">📈</div>
+              <div className="stat-icon savings-icon">?</div>
             </div>
             <p className="stat-value">$1,250</p>
             <p className="stat-change positive">On track for next trip</p>
@@ -85,7 +99,7 @@ export default function ProfilePage() {
           <div className="stat-card">
             <div className="stat-header">
               <h3 className="stat-title">Next Trip</h3>
-              <div className="stat-icon calendar-icon">🗓</div>
+              <div className="stat-icon calendar-icon">?</div>
             </div>
             <p className="stat-value">43 days</p>
             <p className="stat-destination">Bali, Indonesia</p>
@@ -101,31 +115,31 @@ export default function ProfilePage() {
         <div className="settings-menu">
           <div className="menu-item">
             <div className="menu-item-content">
-              <span className="menu-icon">👤</span>
+              <span className="menu-icon">?</span>
               <span className="menu-text">Personal Information</span>
             </div>
-            <span className="chevron-right">›</span>
+            <span className="chevron-right">?</span>
           </div>
           <div className="menu-item">
             <div className="menu-item-content">
-              <span className="menu-icon">💳</span>
+              <span className="menu-icon">?</span>
               <span className="menu-text">Payment Methods</span>
             </div>
-            <span className="chevron-right">›</span>
+            <span className="chevron-right">?</span>
           </div>
           <div className="menu-item">
             <div className="menu-item-content">
-              <span className="menu-icon">⚙</span>
+              <span className="menu-icon">?</span>
               <span className="menu-text">Preferences</span>
             </div>
-            <span className="chevron-right">›</span>
+            <span className="chevron-right">?</span>
           </div>
-          <div className="menu-item logout">
+          <div className="menu-item logout" onClick={handleLogout}>
             <div className="menu-item-content">
-              <span className="menu-icon">🚪</span>
+              <span className="menu-icon">?</span>
               <span className="menu-text">Log Out</span>
             </div>
-            <span className="chevron-right">›</span>
+            <span className="chevron-right">?</span>
           </div>
         </div>
       </div>
